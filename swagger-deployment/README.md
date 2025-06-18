@@ -25,5 +25,5 @@ This is the public documentation for the Help App Backend API, deployed using Sw
 
 ## 👨‍💻 Developer
 **Awe Joseph Olaitan**
-- Website: https://awejosepholaitan.dev
-- Contact: Developer Assessment Project
+- Website: https://awejoseph.vercel.app
+- About: Developer Assessment Project
