@@ -18,6 +18,12 @@ A comprehensive NestJS-based backend API for the Help App - a service-based plat
 - Authentication token management
 - Real-time API exploration
 
+**🚀 Public Swagger Documentation**: [Deploy to SwaggerHub/Vercel](./SWAGGER_DEPLOYMENT_GUIDE.md)
+- Ready-to-deploy Swagger UI files in `swagger-deployment/` folder
+- Complete deployment guide for SwaggerHub, Vercel, and Redocly
+- Professional public documentation hosting options
+- Assessment requirement compliance: **✅ READY**
+
 ## 📦 Tech Stack
 
 - **Framework**: NestJS (Node.js)

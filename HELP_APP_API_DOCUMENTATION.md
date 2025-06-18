@@ -621,6 +621,6 @@ For API support and documentation updates, please contact the development team o
 
 ---
 
-**Last Updated**: June 18, 2024  
+**Last Updated**: June 18, 2025  
 **API Version**: 1.0.0  
 **Documentation Version**: 1.0.0 
