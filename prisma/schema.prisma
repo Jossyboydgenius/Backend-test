@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model - can be either client or provider
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  userType  UserType
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  clientBookings   Booking[] @relation("ClientBookings")
+  providerBookings Booking[] @relation("ProviderBookings")
+  clientReviews    Review[]  @relation("ClientReviews")
+  providerReviews  Review[]  @relation("ProviderReviews")
+
+  @@map("users")
+}
+
+// Service model
+model Service {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Relations
+  bookings Booking[]
+
+  @@map("services")
+}
+
+// Booking model
+model Booking {
+  id            String        @id @default(cuid())
+  serviceId     String
+  clientId      String
+  providerId    String?
+  status        BookingStatus @default(PENDING)
+  scheduledDate DateTime
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relations
+  service  Service @relation(fields: [serviceId], references: [id])
+  client   User    @relation("ClientBookings", fields: [clientId], references: [id])
+  provider User?   @relation("ProviderBookings", fields: [providerId], references: [id])
+  reviews  Review[]
+
+  @@map("bookings")
+}
+
+// Review model
+model Review {
+  id         String   @id @default(cuid())
+  rating     Int      @db.SmallInt
+  comment    String?
+  bookingId  String
+  clientId   String
+  providerId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  booking  Booking @relation(fields: [bookingId], references: [id])
+  client   User    @relation("ClientReviews", fields: [clientId], references: [id])
+  provider User    @relation("ProviderReviews", fields: [providerId], references: [id])
+
+  @@map("reviews")
+}
+
+// Auth Token model for refresh tokens or session management
+model AuthToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  type      TokenType
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("auth_tokens")
+}
+
+// Enums
+enum UserType {
+  CLIENT
+  PROVIDER
+}
+
+enum BookingStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  COMPLETED
+  CANCELLED
+}
+
+enum TokenType {
+  REFRESH
+  ACCESS
+}
